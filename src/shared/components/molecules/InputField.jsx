@@ -1,5 +1,5 @@
-import "./InputField.css";
-import Input from "../../../styles/InputField.css";
+import Input from "../atoms/Input.jsx";
+import "../../../styles/components/InputField.css";
 
 export default function InputField({ label, placeholder, type }) {
   return (
