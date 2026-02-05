@@ -1,4 +1,4 @@
-import "../../../styles/Button.css";
+import "../../../styles/components/Button.css";
 
 export default function Button({ children, variant = "primary" }) {
   return (

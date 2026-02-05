@@ -1,4 +1,4 @@
-import "../../../styles/Input.css";
+import "../../../styles/components/Input.css";
 
 export default function Input({ type = "text", placeholder }) {
   return (
