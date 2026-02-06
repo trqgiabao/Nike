@@ -1,6 +1,7 @@
 import { Routes as RouterRoutes, Route } from "react-router-dom";
 import App from "./App.jsx";
 import Signup from "./pages/Signup.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Routes() {
     <RouterRoutes>
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="/signup" element={<Signup />} />
     </RouterRoutes>

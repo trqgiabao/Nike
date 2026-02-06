@@ -1,0 +1,124 @@
+.nike-profile-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.nike-member-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.nike-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.nike-member-name {
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.nike-member-subtitle {
+    color: #757575;
+    font-size: 1.1rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: #0071e3;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.interests-tags .tag {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0.3rem;
+    border-radius: 20px;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.tag.active {
+    background: #111;
+    color: white;
+}
+
+.add-interests-placeholder {
+    text-align: center;
+    padding: 2rem;
+    border: 2px dashed #ccc;
+    border-radius: 12px;
+}
+
+.placeholder-box {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.plus-icon {
+    font-size: 2.5rem;
+    color: #0071e3;
+}
+
+.products-carousel,
+.benefits-grid,
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card,
+.benefit-card,
+.app-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.product-card img,
+.benefit-card img,
+.app-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.download-btn {
+    background: #111;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 1rem 0;
+}
