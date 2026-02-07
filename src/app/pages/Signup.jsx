@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   emailSchema,
   oneTimeCodeSchema,
   passwordSchema,
 } from "../../validation/signupSchemas.js";
+import { register as registerApi, saveAuth } from "../../features/auth/services.js";
 import "../../styles/pages/Signup.css";
 
 const NIKE_LOGO = "/images/nike.png";
 const RESEND_COOLDOWN = 30;
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
+  const [apiError, setApiError] = useState("");
 
   const emailForm = useForm({
     resolver: yupResolver(emailSchema),
@@ -50,13 +53,29 @@ export default function Signup() {
     console.log("Signup with code:", { email, code: data.code });
   };
 
-  const onPasswordSubmit = (data) => {
-    console.log("Signup with password:", { email, password: data.password });
+  const onPasswordSubmit = async (data) => {
+    setApiError("");
+    try {
+      const res = await registerApi({
+        username: email,
+        email,
+        password: data.password,
+        role: "User",
+      });
+      saveAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+      navigate("/", { replace: true });
+    } catch (err) {
+      setApiError(err.message || "Registration failed. Please try again.");
+    }
   };
 
   const resendCode = () => {
     setResendSeconds(RESEND_COOLDOWN);
   };
+
+  useEffect(() => {
+    setApiError("");
+  }, [step]);
 
   useEffect(() => {
     if (step !== 3 || resendSeconds <= 0) return;
@@ -261,12 +280,15 @@ export default function Signup() {
                   </span>
                 )}
               </div>
+              {apiError && (
+                <p className="nike-auth-error nike-auth-api-error">{apiError}</p>
+              )}
               <button
                 type="submit"
                 className="nike-auth-btn nike-auth-btn-primary"
                 disabled={passwordForm.formState.isSubmitting}
               >
-                Create account
+                {passwordForm.formState.isSubmitting ? "Creating..." : "Create account"}
               </button>
               <button
                 type="button"
