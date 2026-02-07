@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   emailSchema,
   oneTimeCodeSchema,
+  emailOtpSchema,
   passwordSchema,
 } from "../../validation/signupSchemas.js";
-import { register as registerApi } from "../../features/auth/services.js";
+import { register as registerApi, verifyEmailOtp } from "../../features/auth/services.js";
 import { useAuthStore } from "../../features/auth/authStore.js";
 import "../../styles/pages/Signup.css";
 
@@ -32,9 +34,14 @@ export default function Signup() {
     defaultValues: { code: "" },
   });
 
+  const verifyOtpForm = useForm({
+    resolver: yupResolver(emailOtpSchema),
+    defaultValues: { code: "" },
+  });
+
   const passwordForm = useForm({
     resolver: yupResolver(passwordSchema),
-    defaultValues: { password: "", confirmPassword: "" },
+    defaultValues: { username: "", password: "", confirmPassword: "" },
   });
 
   const onEmailSubmit = (data) => {
@@ -55,17 +62,38 @@ export default function Signup() {
     console.log("Signup with code:", { email, code: data.code });
   };
 
+  const onVerifyCodeSubmit = async (data) => {
+    setApiError("");
+    try {
+      const res = await verifyEmailOtp({ email, code: data.code });
+      const hasTokens = res.accessToken && res.refreshToken;
+      if (hasTokens) {
+        setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+      }
+      toast.success("Đăng ký thành công. Đang chuyển đến trang đăng nhập...");
+      setTimeout(() => navigate("/signin", { replace: true }), 2000);
+    } catch (err) {
+      setApiError(err.message || "Invalid code. Please try again.");
+    }
+  };
+
   const onPasswordSubmit = async (data) => {
     setApiError("");
     try {
       const res = await registerApi({
-        username: email,
+        username: data.username,
         email,
         password: data.password,
-        role: "User",
       });
-      setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
-      navigate("/", { replace: true });
+      const hasTokens = res.accessToken && res.refreshToken;
+      if (hasTokens) {
+        setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+        navigate("/", { replace: true });
+      } else {
+        setStep(5);
+        setResendSeconds(RESEND_COOLDOWN);
+        toast.info("Kiểm tra email để xác nhận tài khoản.");
+      }
     } catch (err) {
       setApiError(err.message || "Registration failed. Please try again.");
     }
@@ -76,9 +104,12 @@ export default function Signup() {
   };
 
   useEffect(() => setApiError(""), [step]);
+  useEffect(() => {
+    if (step === 5) verifyOtpForm.reset({ code: "" });
+  }, [step]);
 
   useEffect(() => {
-    if (step !== 3 || resendSeconds <= 0) return;
+    if ((step !== 3 && step !== 5) || resendSeconds <= 0) return;
     const t = setInterval(() => setResendSeconds((s) => s - 1), 1000);
     return () => clearInterval(t);
   }, [step, resendSeconds]);
@@ -226,9 +257,62 @@ export default function Signup() {
           </>
         )}
 
+        {step === 5 && (
+          <>
+            <h1 className="nike-auth-headline">
+              Check your email for a verification code.
+            </h1>
+            <p className="nike-auth-email-row">
+              We sent a 6-digit code to <strong>{email}</strong>. Enter it below.
+            </p>
+            <form onSubmit={verifyOtpForm.handleSubmit(onVerifyCodeSubmit)} className="nike-auth-form">
+              <div className="nike-auth-field">
+                <label htmlFor="verify-code">Verification code (6 digits)*</label>
+                <input
+                  id="verify-code"
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  placeholder="000000"
+                  className={`nike-auth-input ${verifyOtpForm.formState.errors.code ? "nike-auth-input-error" : ""}`}
+                  {...verifyOtpForm.register("code")}
+                />
+                {verifyOtpForm.formState.errors.code && (
+                  <span className="nike-auth-error">
+                    {verifyOtpForm.formState.errors.code.message}
+                  </span>
+                )}
+              </div>
+              {apiError && (
+                <p className="nike-auth-error nike-auth-api-error">{apiError}</p>
+              )}
+              <p className="nike-auth-resend">
+                {resendSeconds > 0 ? (
+                  <>Resend code in {resendSeconds}s</>
+                ) : (
+                  <button
+                    type="button"
+                    className="nike-auth-resend-btn"
+                    onClick={resendCode}
+                  >
+                    Resend code
+                  </button>
+                )}
+              </p>
+              <button
+                type="submit"
+                className="nike-auth-btn nike-auth-btn-primary"
+                disabled={verifyOtpForm.formState.isSubmitting}
+              >
+                {verifyOtpForm.formState.isSubmitting ? "Verifying..." : "Verify"}
+              </button>
+            </form>
+          </>
+        )}
+
         {step === 4 && (
           <>
-            <h1 className="nike-auth-headline">Create your password</h1>
+            <h1 className="nike-auth-headline">Create your account</h1>
             <p className="nike-auth-email-row">
               {email}{" "}
               <button
@@ -240,6 +324,22 @@ export default function Signup() {
               </button>
             </p>
             <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="nike-auth-form">
+              <div className="nike-auth-field">
+                <label htmlFor="username">Username*</label>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="Choose a username"
+                  autoComplete="username"
+                  className={`nike-auth-input ${passwordForm.formState.errors.username ? "nike-auth-input-error" : ""}`}
+                  {...passwordForm.register("username")}
+                />
+                {passwordForm.formState.errors.username && (
+                  <span className="nike-auth-error">
+                    {passwordForm.formState.errors.username.message}
+                  </span>
+                )}
+              </div>
               <div className="nike-auth-field">
                 <label htmlFor="password">Password*</label>
                 <div className="nike-auth-password-wrap">

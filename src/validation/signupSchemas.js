@@ -15,7 +15,19 @@ export const oneTimeCodeSchema = yup.object({
     .matches(/^\d{8}$/, "Code must be 8 digits"),
 });
 
+export const emailOtpSchema = yup.object({
+  code: yup
+    .string()
+    .required("Code is required")
+    .length(6, "Enter the 6-digit code")
+    .matches(/^\d{6}$/, "Code must be 6 digits"),
+});
+
 export const passwordSchema = yup.object({
+  username: yup
+    .string()
+    .required("Username is required")
+    .min(3, "Username must be at least 3 characters"),
   password: yup
     .string()
     .required("Password is required")
