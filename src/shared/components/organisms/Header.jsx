@@ -4,20 +4,41 @@ import "../../../styles/components/Header.css";
 const NIKE_LOGO_URL = "/images/nike.png";
 
 const SearchIcon = () => (
-  <svg className="header-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+  <svg
+    className="header-icon search-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    aria-hidden
+  >
     <circle cx="11" cy="11" r="7" />
     <path d="M16 16l4 4" />
   </svg>
 );
 
 const HeartIcon = () => (
-  <svg className="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+  <svg
+    className="header-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    aria-hidden
+  >
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
 );
 
 const BagIcon = () => (
-  <svg className="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+  <svg
+    className="header-icon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    aria-hidden
+  >
     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
     <line x1="3" y1="6" x2="21" y2="6" />
     <path d="M16 10a4 4 0 0 1-8 0" />
@@ -29,7 +50,7 @@ export default function Header() {
     { label: "Find a Store", href: "#" },
     { label: "Help", href: "#" },
     { label: "Sign Up", to: "/signup" },
-    { label: "Sign In", href: "#" },
+    { label: "Sign In", href: "/signin" },
   ];
 
   const navLinks = [
@@ -45,7 +66,11 @@ export default function Header() {
       <div className="header-utility">
         <div className="header-utility-left">
           <a href="/" className="header-utility-logo" aria-label="Nike">
-            <img src={NIKE_LOGO_URL} alt="Nike" className="header-logo-img header-logo-no-bg" />
+            <img
+              src={NIKE_LOGO_URL}
+              alt="Nike"
+              className="header-logo-img header-logo-no-bg"
+            />
           </a>
         </div>
         <nav className="header-utility-links" aria-label="Utility">
