@@ -118,6 +118,11 @@
   color: #c00;
 }
 
+.nike-auth-api-error {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
 .nike-auth-resend {
   margin: 0 0 1rem;
   font-size: 0.875rem;
