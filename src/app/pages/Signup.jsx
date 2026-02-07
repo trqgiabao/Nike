@@ -7,7 +7,8 @@ import {
   oneTimeCodeSchema,
   passwordSchema,
 } from "../../validation/signupSchemas.js";
-import { register as registerApi, saveAuth } from "../../features/auth/services.js";
+import { register as registerApi } from "../../features/auth/services.js";
+import { useAuthStore } from "../../features/auth/authStore.js";
 import "../../styles/pages/Signup.css";
 
 const NIKE_LOGO = "/images/nike.png";
@@ -15,6 +16,7 @@ const RESEND_COOLDOWN = 30;
 
 export default function Signup() {
   const navigate = useNavigate();
+  const setAuth = useAuthStore((s) => s.setAuth);
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
@@ -62,7 +64,7 @@ export default function Signup() {
         password: data.password,
         role: "User",
       });
-      saveAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+      setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
       navigate("/", { replace: true });
     } catch (err) {
       setApiError(err.message || "Registration failed. Please try again.");
@@ -73,9 +75,7 @@ export default function Signup() {
     setResendSeconds(RESEND_COOLDOWN);
   };
 
-  useEffect(() => {
-    setApiError("");
-  }, [step]);
+  useEffect(() => setApiError(""), [step]);
 
   useEffect(() => {
     if (step !== 3 || resendSeconds <= 0) return;
