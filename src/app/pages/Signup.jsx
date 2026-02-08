@@ -1,181 +1,291 @@
 // import { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
 // import { yupResolver } from "@hookform/resolvers/yup";
-// import { Link } from "react-router-dom";
+// import { Link, useNavigate } from "react-router-dom";
+// import { toast } from "react-toastify";
 // import {
 //   emailSchema,
 //   oneTimeCodeSchema,
+//   emailOtpSchema,
 //   passwordSchema,
 // } from "../../validation/signupSchemas.js";
-// import "../../pages/NotFound.jsx";
+// import { register as registerApi, verifyEmailOtp } from "../../features/auth/services.js";
+// import { useAuthStore } from "../../features/auth/authStore.js";
+// import "../../styles/pages/Signup.css";
 
-// const NIKE_LOGO = "/images/nike.png";
-// const RESEND_COOLDOWN = 30;
+// // const NIKE_LOGO = "/images/nike.png";
+// // const RESEND_COOLDOWN = 30;
 
 export default function Signup() {
+//   const navigate = useNavigate();
+//   const setAuth = useAuthStore((s) => s.setAuth);
 //   const [step, setStep] = useState(1);
 //   const [email, setEmail] = useState("");
 //   const [resendSeconds, setResendSeconds] = useState(0);
+//   const [apiError, setApiError] = useState("");
 
-//   const emailForm = useForm({
-//     resolver: yupResolver(emailSchema),
-//     defaultValues: { email: "" },
-//   });
+// //   const emailForm = useForm({
+// //     resolver: yupResolver(emailSchema),
+// //     defaultValues: { email: "" },
+// //   });
 
-//   const codeForm = useForm({
-//     resolver: yupResolver(oneTimeCodeSchema),
+// //   const codeForm = useForm({
+// //     resolver: yupResolver(oneTimeCodeSchema),
+// //     defaultValues: { code: "" },
+// //   });
+
+//   const verifyOtpForm = useForm({
+//     resolver: yupResolver(emailOtpSchema),
 //     defaultValues: { code: "" },
 //   });
 
 //   const passwordForm = useForm({
 //     resolver: yupResolver(passwordSchema),
-//     defaultValues: { password: "", confirmPassword: "" },
+//     defaultValues: { username: "", password: "", confirmPassword: "" },
 //   });
 
-//   const onEmailSubmit = (data) => {
-//     setEmail(data.email);
-//     setStep(2);
+// //   const onEmailSubmit = (data) => {
+// //     setEmail(data.email);
+// //     setStep(2);
+// //   };
+
+// //   const chooseOneTimeCode = () => {
+// //     setResendSeconds(RESEND_COOLDOWN);
+// //     setStep(3);
+// //   };
+
+// //   const choosePassword = () => {
+// //     setStep(4);
+// //   };
+
+// //   const onCodeSubmit = (data) => {
+// //     console.log("Signup with code:", { email, code: data.code });
+// //   };
+
+//   const onVerifyCodeSubmit = async (data) => {
+//     setApiError("");
+//     try {
+//       const res = await verifyEmailOtp({ email, code: data.code });
+//       const hasTokens = res.accessToken && res.refreshToken;
+//       if (hasTokens) {
+//         setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+//       }
+//       toast.success("Đăng ký thành công. Đang chuyển đến trang đăng nhập...");
+//       setTimeout(() => navigate("/signin", { replace: true }), 2000);
+//     } catch (err) {
+//       setApiError(err.message || "Invalid code. Please try again.");
+//     }
 //   };
 
-//   const chooseOneTimeCode = () => {
-//     setResendSeconds(RESEND_COOLDOWN);
-//     setStep(3);
+//   const onPasswordSubmit = async (data) => {
+//     setApiError("");
+//     try {
+//       const res = await registerApi({
+//         username: data.username,
+//         email,
+//         password: data.password,
+//       });
+//       const hasTokens = res.accessToken && res.refreshToken;
+//       if (hasTokens) {
+//         setAuth({ accessToken: res.accessToken, refreshToken: res.refreshToken, id: res.id });
+//         navigate("/", { replace: true });
+//       } else {
+//         setStep(5);
+//         setResendSeconds(RESEND_COOLDOWN);
+//         toast.info("Kiểm tra email để xác nhận tài khoản.");
+//       }
+//     } catch (err) {
+//       setApiError(err.message || "Registration failed. Please try again.");
+//     }
 //   };
 
-//   const choosePassword = () => {
-//     setStep(4);
-//   };
+// //   const resendCode = () => {
+// //     setResendSeconds(RESEND_COOLDOWN);
+// //   };
 
-//   const onCodeSubmit = (data) => {
-//     console.log("Signup with code:", { email, code: data.code });
-//   };
-
-//   const onPasswordSubmit = (data) => {
-//     console.log("Signup with password:", { email, password: data.password });
-//   };
-
-//   const resendCode = () => {
-//     setResendSeconds(RESEND_COOLDOWN);
-//   };
+//   useEffect(() => setApiError(""), [step]);
+//   useEffect(() => {
+//     if (step === 5) verifyOtpForm.reset({ code: "" });
+//   }, [step]);
 
 //   useEffect(() => {
-//     if (step !== 3 || resendSeconds <= 0) return;
+//     if ((step !== 3 && step !== 5) || resendSeconds <= 0) return;
 //     const t = setInterval(() => setResendSeconds((s) => s - 1), 1000);
 //     return () => clearInterval(t);
 //   }, [step, resendSeconds]);
 
-//   const [showPassword, setShowPassword] = useState(false);
+// //   const [showPassword, setShowPassword] = useState(false);
 
-//   return (
-//     <div className="nike-auth">
-//       <div className="nike-auth-logo-wrap">
-//         <Link to="/" className="nike-auth-logo">
-//           <img src={NIKE_LOGO} alt="Nike" className="nike-auth-logo-img" />
-//         </Link>
-//       </div>
+// //   return (
+// //     <div className="nike-auth">
+// //       <div className="nike-auth-logo-wrap">
+// //         <Link to="/" className="nike-auth-logo">
+// //           <img src={NIKE_LOGO} alt="Nike" className="nike-auth-logo-img" />
+// //         </Link>
+// //       </div>
 
-//       <div className="nike-auth-card">
-//         {step === 1 && (
+// //       <div className="nike-auth-card">
+// //         {step === 1 && (
+// //           <>
+// //             <h1 className="nike-auth-headline">
+// //               Enter your email to join us or sign in.
+// //             </h1>
+// //             <form onSubmit={emailForm.handleSubmit(onEmailSubmit)} className="nike-auth-form">
+// //               <div className="nike-auth-field">
+// //                 <label htmlFor="email">Email*</label>
+// //                 <input
+// //                   id="email"
+// //                   type="email"
+// //                   placeholder="your@email.com"
+// //                   className={`nike-auth-input ${emailForm.formState.errors.email ? "nike-auth-input-error" : ""}`}
+// //                   {...emailForm.register("email")}
+// //                 />
+// //                 {emailForm.formState.errors.email && (
+// //                   <span className="nike-auth-error">
+// //                     {emailForm.formState.errors.email.message}
+// //                   </span>
+// //                 )}
+// //               </div>
+// //               <p className="nike-auth-legal">
+// //                 By continuing, I agree to Nike's{" "}
+// //                 <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a>.
+// //               </p>
+// //               <button
+// //                 type="submit"
+// //                 className="nike-auth-btn nike-auth-btn-primary"
+// //                 disabled={emailForm.formState.isSubmitting}
+// //               >
+// //                 Continue
+// //               </button>
+// //             </form>
+// //           </>
+// //         )}
+
+// //         {step === 2 && (
+// //           <>
+// //             <h1 className="nike-auth-headline">How do you want to sign up?</h1>
+// //             <p className="nike-auth-email-row">
+// //               {email}{" "}
+// //               <button
+// //                 type="button"
+// //                 className="nike-auth-edit"
+// //                 onClick={() => setStep(1)}
+// //               >
+// //                 Edit
+// //               </button>
+// //             </p>
+// //             <div className="nike-auth-form">
+// //               <button
+// //                 type="button"
+// //                 className="nike-auth-btn nike-auth-btn-primary"
+// //                 onClick={chooseOneTimeCode}
+// //               >
+// //                 Send one-time code to email
+// //               </button>
+// //               <button
+// //                 type="button"
+// //                 className="nike-auth-btn nike-auth-btn-secondary"
+// //                 onClick={choosePassword}
+// //               >
+// //                 Use password
+// //               </button>
+// //             </div>
+// //           </>
+// //         )}
+
+// //         {step === 3 && (
+// //           <>
+// //             <h1 className="nike-auth-headline">
+// //               Enter the 8-digit code sent to your email.
+// //             </h1>
+// //             <p className="nike-auth-email-row">
+// //               {email}{" "}
+// //               <button
+// //                 type="button"
+// //                 className="nike-auth-edit"
+// //                 onClick={() => setStep(1)}
+// //               >
+// //                 Edit
+// //               </button>
+// //             </p>
+// //             <form onSubmit={codeForm.handleSubmit(onCodeSubmit)} className="nike-auth-form">
+// //               <div className="nike-auth-field">
+// //                 <label htmlFor="code">8-digit code*</label>
+// //                 <input
+// //                   id="code"
+// //                   type="text"
+// //                   inputMode="numeric"
+// //                   maxLength={8}
+// //                   placeholder="00000000"
+// //                   className={`nike-auth-input ${codeForm.formState.errors.code ? "nike-auth-input-error" : ""}`}
+// //                   {...codeForm.register("code")}
+// //                 />
+// //                 {codeForm.formState.errors.code && (
+// //                   <span className="nike-auth-error">
+// //                     {codeForm.formState.errors.code.message}
+// //                   </span>
+// //                 )}
+// //               </div>
+// //               <p className="nike-auth-resend">
+// //                 {resendSeconds > 0 ? (
+// //                   <>Resend code in {resendSeconds}s</>
+// //                 ) : (
+// //                   <button
+// //                     type="button"
+// //                     className="nike-auth-resend-btn"
+// //                     onClick={resendCode}
+// //                   >
+// //                     Resend code
+// //                   </button>
+// //                 )}
+// //               </p>
+// //               <button
+// //                 type="submit"
+// //                 className="nike-auth-btn nike-auth-btn-primary"
+// //                 disabled={codeForm.formState.isSubmitting}
+// //               >
+// //                 Continue
+// //               </button>
+// //               <button
+// //                 type="button"
+// //                 className="nike-auth-btn nike-auth-btn-secondary"
+// //                 onClick={choosePassword}
+// //               >
+// //                 Use password instead
+// //               </button>
+// //             </form>
+// //           </>
+// //         )}
+
+//         {step === 5 && (
 //           <>
 //             <h1 className="nike-auth-headline">
-//               Enter your email to join us or sign in.
-//             </h1>
-//             <form onSubmit={emailForm.handleSubmit(onEmailSubmit)} className="nike-auth-form">
-//               <div className="nike-auth-field">
-//                 <label htmlFor="email">Email*</label>
-//                 <input
-//                   id="email"
-//                   type="email"
-//                   placeholder="your@email.com"
-//                   className={`nike-auth-input ${emailForm.formState.errors.email ? "nike-auth-input-error" : ""}`}
-//                   {...emailForm.register("email")}
-//                 />
-//                 {emailForm.formState.errors.email && (
-//                   <span className="nike-auth-error">
-//                     {emailForm.formState.errors.email.message}
-//                   </span>
-//                 )}
-//               </div>
-//               <p className="nike-auth-legal">
-//                 By continuing, I agree to Nike's{" "}
-//                 <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a>.
-//               </p>
-//               <button
-//                 type="submit"
-//                 className="nike-auth-btn nike-auth-btn-primary"
-//                 disabled={emailForm.formState.isSubmitting}
-//               >
-//                 Continue
-//               </button>
-//             </form>
-//           </>
-//         )}
-
-//         {step === 2 && (
-//           <>
-//             <h1 className="nike-auth-headline">How do you want to sign up?</h1>
-//             <p className="nike-auth-email-row">
-//               {email}{" "}
-//               <button
-//                 type="button"
-//                 className="nike-auth-edit"
-//                 onClick={() => setStep(1)}
-//               >
-//                 Edit
-//               </button>
-//             </p>
-//             <div className="nike-auth-form">
-//               <button
-//                 type="button"
-//                 className="nike-auth-btn nike-auth-btn-primary"
-//                 onClick={chooseOneTimeCode}
-//               >
-//                 Send one-time code to email
-//               </button>
-//               <button
-//                 type="button"
-//                 className="nike-auth-btn nike-auth-btn-secondary"
-//                 onClick={choosePassword}
-//               >
-//                 Use password
-//               </button>
-//             </div>
-//           </>
-//         )}
-
-//         {step === 3 && (
-//           <>
-//             <h1 className="nike-auth-headline">
-//               Enter the 8-digit code sent to your email.
+//               Check your email for a verification code.
 //             </h1>
 //             <p className="nike-auth-email-row">
-//               {email}{" "}
-//               <button
-//                 type="button"
-//                 className="nike-auth-edit"
-//                 onClick={() => setStep(1)}
-//               >
-//                 Edit
-//               </button>
+//               We sent a 6-digit code to <strong>{email}</strong>. Enter it below.
 //             </p>
-//             <form onSubmit={codeForm.handleSubmit(onCodeSubmit)} className="nike-auth-form">
+//             <form onSubmit={verifyOtpForm.handleSubmit(onVerifyCodeSubmit)} className="nike-auth-form">
 //               <div className="nike-auth-field">
-//                 <label htmlFor="code">8-digit code*</label>
+//                 <label htmlFor="verify-code">Verification code (6 digits)*</label>
 //                 <input
-//                   id="code"
+//                   id="verify-code"
 //                   type="text"
 //                   inputMode="numeric"
-//                   maxLength={8}
-//                   placeholder="00000000"
-//                   className={`nike-auth-input ${codeForm.formState.errors.code ? "nike-auth-input-error" : ""}`}
-//                   {...codeForm.register("code")}
+//                   maxLength={6}
+//                   placeholder="000000"
+//                   className={`nike-auth-input ${verifyOtpForm.formState.errors.code ? "nike-auth-input-error" : ""}`}
+//                   {...verifyOtpForm.register("code")}
 //                 />
-//                 {codeForm.formState.errors.code && (
+//                 {verifyOtpForm.formState.errors.code && (
 //                   <span className="nike-auth-error">
-//                     {codeForm.formState.errors.code.message}
+//                     {verifyOtpForm.formState.errors.code.message}
 //                   </span>
 //                 )}
 //               </div>
+//               {apiError && (
+//                 <p className="nike-auth-error nike-auth-api-error">{apiError}</p>
+//               )}
 //               <p className="nike-auth-resend">
 //                 {resendSeconds > 0 ? (
 //                   <>Resend code in {resendSeconds}s</>
@@ -192,16 +302,9 @@ export default function Signup() {
 //               <button
 //                 type="submit"
 //                 className="nike-auth-btn nike-auth-btn-primary"
-//                 disabled={codeForm.formState.isSubmitting}
+//                 disabled={verifyOtpForm.formState.isSubmitting}
 //               >
-//                 Continue
-//               </button>
-//               <button
-//                 type="button"
-//                 className="nike-auth-btn nike-auth-btn-secondary"
-//                 onClick={choosePassword}
-//               >
-//                 Use password instead
+//                 {verifyOtpForm.formState.isSubmitting ? "Verifying..." : "Verify"}
 //               </button>
 //             </form>
 //           </>
@@ -209,7 +312,7 @@ export default function Signup() {
 
 //         {step === 4 && (
 //           <>
-//             <h1 className="nike-auth-headline">Create your password</h1>
+//             <h1 className="nike-auth-headline">Create your account</h1>
 //             <p className="nike-auth-email-row">
 //               {email}{" "}
 //               <button
@@ -221,6 +324,22 @@ export default function Signup() {
 //               </button>
 //             </p>
 //             <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="nike-auth-form">
+//               <div className="nike-auth-field">
+//                 <label htmlFor="username">Username*</label>
+//                 <input
+//                   id="username"
+//                   type="text"
+//                   placeholder="Choose a username"
+//                   autoComplete="username"
+//                   className={`nike-auth-input ${passwordForm.formState.errors.username ? "nike-auth-input-error" : ""}`}
+//                   {...passwordForm.register("username")}
+//                 />
+//                 {passwordForm.formState.errors.username && (
+//                   <span className="nike-auth-error">
+//                     {passwordForm.formState.errors.username.message}
+//                   </span>
+//                 )}
+//               </div>
 //               <div className="nike-auth-field">
 //                 <label htmlFor="password">Password*</label>
 //                 <div className="nike-auth-password-wrap">
@@ -261,12 +380,15 @@ export default function Signup() {
 //                   </span>
 //                 )}
 //               </div>
+//               {apiError && (
+//                 <p className="nike-auth-error nike-auth-api-error">{apiError}</p>
+//               )}
 //               <button
 //                 type="submit"
 //                 className="nike-auth-btn nike-auth-btn-primary"
 //                 disabled={passwordForm.formState.isSubmitting}
 //               >
-//                 Create account
+//                 {passwordForm.formState.isSubmitting ? "Creating..." : "Create account"}
 //               </button>
 //               <button
 //                 type="button"
