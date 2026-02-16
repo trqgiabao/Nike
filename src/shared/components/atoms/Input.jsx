@@ -1,11 +1,23 @@
-import "../../../styles/components/Input.css";
-
-export default function Input({ type = "text", placeholder }) {
+import "../../../styles/Input.css";
+const Input = ({ 
+  type = 'text',
+  placeholder,
+  className = '',
+  error,
+  ...props 
+}) => {
+  const classNames = [
+    'input',
+    error && 'input--error',
+    className
+  ].filter(Boolean).join(' ');
   return (
-    <input
+    <input 
       type={type}
       placeholder={placeholder}
-      className="input"
+      className={classNames}
+      {...props}
     />
   );
-}
+};
+export default Input;

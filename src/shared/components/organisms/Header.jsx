@@ -1,96 +1,42 @@
-import { Link } from "react-router-dom";
-import "../../../styles/components/Header.css";
+import "../../../styles/Header.css"
+import { ShoppingBag, Heart, Search, Menu } from 'lucide-react';
+import { IconButton } from '../molecules';
+import { NavLink } from '../molecules';
 
-const NIKE_LOGO_URL = "/images/nike.png";
-
-const SearchIcon = () => (
-  <svg className="header-icon search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-    <circle cx="11" cy="11" r="7" />
-    <path d="M16 16l4 4" />
-  </svg>
-);
-
-const HeartIcon = () => (
-  <svg className="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-
-const BagIcon = () => (
-  <svg className="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-    <line x1="3" y1="6" x2="21" y2="6" />
-    <path d="M16 10a4 4 0 0 1-8 0" />
-  </svg>
-);
-
-export default function Header() {
-  const utilityLinks = [
-    { label: "Find a Store", href: "#" },
-    { label: "Help", href: "#" },
-    { label: "Sign Up", to: "/signup" },
-    { label: "Sign In", href: "#" },
-  ];
-
-  const navLinks = [
-    { label: "New & Featured", href: "#" },
-    { label: "Men", href: "#" },
-    { label: "Women", href: "#" },
-    { label: "Kids", href: "#" },
-    { label: "Sale", href: "#" },
-  ];
-
+const Header = () => {
   return (
     <header className="header">
-      <div className="header-utility">
-        <div className="header-utility-left">
-          <a href="/" className="header-utility-logo" aria-label="Nike">
-            <img src={NIKE_LOGO_URL} alt="Nike" className="header-logo-img header-logo-no-bg" />
+      <div className="header__container">
+        <div className="header__left">
+          <IconButton className="header__menu-button">
+            <Menu size={24} />
+          </IconButton>
+          <a href="/" className="header__logo">
+            <svg height="24" width="72" viewBox="0 0 72 24" fill="currentColor">
+              <path d="M14.16 0L3 21.6h6.24l2.04-4.08h10.68l.72 4.08H28.2L21.36 0h-7.2zm.84 6.72l3.6 7.68h-7.2l3.6-7.68zm17.28-2.16c-2.52 0-4.68.84-6.12 2.28l1.56 3.24c1.08-1.08 2.52-1.68 4.08-1.68 1.92 0 3 .84 3 2.16v.36h-3.72c-3.84 0-6.12 1.8-6.12 4.8 0 2.76 2.16 4.68 5.28 4.68 2.04 0 3.6-.72 4.56-1.92v1.68h5.04v-9.36c0-4.08-2.88-6.24-7.56-6.24zm2.52 11.04c0 1.44-1.32 2.52-3.12 2.52-1.32 0-2.16-.6-2.16-1.56 0-1.08.84-1.68 2.4-1.68h2.88v.72zm21.12-10.8h-5.88l-4.08 10.32L41.88 4.8h-6l7.08 16.08c-.84 1.92-2.04 2.52-3.84 2.52-.84 0-1.56-.12-2.16-.36v4.44c.72.24 1.56.36 2.52.36 3.6 0 5.76-1.44 7.56-5.76L55.92 4.8zm16.08-.24c-5.52 0-9.48 3.72-9.48 8.64s3.96 8.64 9.48 8.64 9.48-3.72 9.48-8.64-3.96-8.64-9.48-8.64zm0 13.08c-2.28 0-3.96-1.8-3.96-4.44s1.68-4.44 3.96-4.44 3.96 1.8 3.96 4.44-1.68 4.44-3.96 4.44z" />
+            </svg>
           </a>
         </div>
-        <nav className="header-utility-links" aria-label="Utility">
-          {utilityLinks.map((link, i) => (
-            <span key={link.label}>
-              {link.to ? (
-                <Link to={link.to}>{link.label}</Link>
-              ) : (
-                <a href={link.href}>{link.label}</a>
-              )}
-              {i < utilityLinks.length - 1 && <span className="sep">|</span>}
-            </span>
-          ))}
+        <nav className="header__nav">
+          <NavLink href="#">New & Featured</NavLink>
+          <NavLink href="#">Men</NavLink>
+          <NavLink href="#">Women</NavLink>
+          <NavLink href="#">Kids</NavLink>
+          <NavLink href="#">Sale</NavLink>
         </nav>
-      </div>
-
-      <div className="header-main">
-        <div className="header-main-left" />
-
-        <nav className="header-nav" aria-label="Main">
-          {navLinks.map((link) => (
-            <a key={link.label} href={link.href} className="header-nav-link">
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="header-actions">
-          <div className="header-search-wrap">
-            <SearchIcon />
-            <input
-              type="search"
-              className="header-search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-          </div>
-          <a href="#" className="header-action-icon" aria-label="Favorites">
-            <HeartIcon />
-          </a>
-          <a href="#" className="header-action-icon" aria-label="Bag">
-            <BagIcon />
-          </a>
+        <div className="header__right">
+          <IconButton>
+            <Search size={20} />
+          </IconButton>
+          <IconButton>
+            <Heart size={20} />
+          </IconButton>
+          <IconButton badge={3}>
+            <ShoppingBag size={20} />
+          </IconButton>
         </div>
       </div>
     </header>
   );
-}
+};
+export default Header;

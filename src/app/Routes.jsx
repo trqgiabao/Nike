@@ -1,25 +1,18 @@
-import { Routes as RouterRoutes, Route } from "react-router-dom";
-import App from "./App.jsx";
+import { Routes, Route } from 'react-router-dom';
+import { HomePage } from '../features/home';
 import Signup from "./pages/Signup.jsx";
-import Profile from "./pages/Profile.jsx";
-
-function Home() {
+import Signin from "./pages/Signin.jsx";
+import NotFound from './pages/NotFound.jsx';
+import Profile from "../features/profile/pages/profile.jsx";
+const AppRoutes = () => {
   return (
-    <main style={{ padding: "2rem", minHeight: "60vh" }}>
-      <h1>NikeSystem</h1>
-      <p>Nội dung trang ở đây.</p>
-    </main>
-  );
-}
-
-export default function Routes() {
-  return (
-    <RouterRoutes>
-      <Route path="/" element={<App />}>
-        <Route index element={<Home />} />
-        <Route path="profile" element={<Profile />} />
-      </Route>
+    <Routes>
+      <Route path="/" element={<HomePage />} />     
       <Route path="/signup" element={<Signup />} />
-    </RouterRoutes>
+      <Route path="/signin" element={<Signin />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
-}
+};
+export default AppRoutes;
