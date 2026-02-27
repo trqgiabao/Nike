@@ -144,3 +144,12 @@ h1 {
   text-underline-offset: 4px;
   text-decoration-color: rgba(255, 75, 43, 0.7);
 }
+
+.auth-signin-btn {
+  background: rgba(255, 75, 43, 0.7);
+  color: #000;
+}
+
+.auth-signin-btn:hover {
+  background: rgba(255, 75, 43, 0.7);
+}
