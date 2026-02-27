@@ -1,7 +1,7 @@
-import Input from "../../shared/components/atoms/Input";
-import Button from "../../shared/components/atoms/Button";
-import "../../styles/Auth.css";
-import swoosh from "../../assets/nike-swoosh.png";
+import Input from "@/shared/components/atoms/input/Input.jsx";
+import Button from "@/shared/components/atoms/button/Button.jsx";
+import "./SignIn.css";
+import swoosh from "@/assets/nike-swoosh.png";
 
 export default function NikeAuth() {
   return (

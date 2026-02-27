@@ -1,7 +1,7 @@
-import "../../../styles/Header.css"
+import "./Header.css"
 import { ShoppingBag, Heart, Search, Menu } from 'lucide-react';
-import { IconButton } from '../molecules';
-import { NavLink } from '../molecules';
+import { IconButton } from '../../molecules';
+import { NavLink } from '../../molecules';
 
 const Header = () => {
   return (

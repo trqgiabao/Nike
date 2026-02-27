@@ -1,5 +1,5 @@
-import "../../../styles/Button.css";
-const Button = ({ 
+import "./Button.css";
+ const Button = ({ 
   children, 
   variant = 'primary', 
   size = 'medium',
@@ -20,4 +20,5 @@ const Button = ({
     </button>
   );
 };
+
 export default Button;

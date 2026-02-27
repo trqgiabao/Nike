@@ -1,5 +1,5 @@
 import AppRoutes from './Routes.jsx';
-import '../styles/Main.css';
+import './style/App.css';
 const App = () => {
   return (
       <AppRoutes />

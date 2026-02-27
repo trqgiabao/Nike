@@ -1,4 +1,4 @@
-import '../../../styles/IconButton.css';
+import './IconButton.css';
 const IconButton = ({ 
   children, 
   variant = 'default',

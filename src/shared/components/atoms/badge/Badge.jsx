@@ -1,4 +1,4 @@
-import '../../../styles/Badge.css';
+import './Badge.css';
 const Badge = ({ 
   children, 
   variant = 'default',

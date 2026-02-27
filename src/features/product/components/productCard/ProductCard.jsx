@@ -1,4 +1,4 @@
-import '../../../styles/ProductCard.css';
+import './ProductCard.css';
 import { Heart } from 'lucide-react';
 import { Badge, Button } from '@/shared/components/atoms';
 import { IconButton } from '@/shared/components/molecules';

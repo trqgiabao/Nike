@@ -1,6 +1,6 @@
-import '../../../styles/Hero.css';
-import heroShoe from '../../../assets/hero-shoe.png';
-import { Badge, Button } from '../../../shared/components/atoms';
+import './Hero.css';
+import heroShoe from '@/assets/hero-shoe.png';
+import { Badge, Button } from '@/shared/components/atoms';
 const Hero = () => {
   return (
     <section className="hero">

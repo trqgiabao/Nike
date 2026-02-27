@@ -1,5 +1,5 @@
-import '../../../styles/Footer.css';
-import { Button, Input } from '../atoms';
+import './Footer.css';
+import { Button, Input } from '../../atoms';
 const Footer = () => {
   return (
     <footer className="footer">

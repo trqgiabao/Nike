@@ -1,4 +1,4 @@
-import '../../../styles/FilterButton.css';
+import './FilterButton.css';
 const FilterButton = ({ 
   children, 
   isActive = false,

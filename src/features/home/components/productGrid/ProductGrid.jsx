@@ -1,4 +1,4 @@
-import '../../../styles/ProductGrid.css';
+import './ProductGrid.css';
 import { useState } from 'react';
 import { ProductCard } from '@/features/product';
 import { Button } from '@/shared/components/atoms';

@@ -1,4 +1,4 @@
-import '../../../styles/Icon.css';
+import './Icon.css';
 const Icon = ({ 
   children, 
   size = 20, 

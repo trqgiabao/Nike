@@ -1,5 +1,5 @@
 
-import "../../../styles/InputField.css";
+import "./InputField.css";
 
 export default function InputField({ label, placeholder, type }) {
   return (
