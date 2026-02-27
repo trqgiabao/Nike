@@ -1,4 +1,4 @@
-const GATEWAY_BASE = import.meta.env.VITE_API_BASE || "https://localhost:3110";
+const GATEWAY_BASE = import.meta.env.VITE_API_BASE || "";
 
 async function requestJson(url, options) {
   const res = await fetch(url, options);
@@ -16,7 +16,7 @@ async function requestJson(url, options) {
 
 export async function register({ username, email, password, role }) {
   const body = { username, email, password, role: role ?? "user" };
-  return requestJson(`${GATEWAY_BASE}/api/auth/register`, {
+  return requestJson(`${GATEWAY_BASE}/api/Auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -24,17 +24,17 @@ export async function register({ username, email, password, role }) {
 }
 
 export async function verifyEmailOtp({ email, code }) {
-  return requestJson(`${GATEWAY_BASE}/api/auth/verify-email-otp`, {
+  return requestJson(`${GATEWAY_BASE}/api/Auth/verify-email-otp`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, otpCode: code }),
   });
 }
 
-export async function signIn({ email, username, password }) {
-  return requestJson(`${GATEWAY_BASE}/api/auth/login`, {
+export async function signIn({username, password }) {
+  return requestJson(`${GATEWAY_BASE}/api/Auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, username, password }),
+    body: JSON.stringify({username, password }),
   });
 }
