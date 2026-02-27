@@ -69,10 +69,44 @@
 
 /* ===== TEXT ===== */
 h1 {
-  margin: 0 0 10px;
+  margin: 0 0 16px;
   font-size: 34px;
   font-weight: 800;
 }
+
+.auth-field {
+  margin-bottom: 14px;
+}
+
+.auth-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-error {
+  color: #ffb3a6;
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.auth-error-api {
+  margin: 0 0 14px;
+}
+
+.auth-footnote {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-footnote a {
+  color: #fff;
+  text-decoration: underline;
+}
+
 .row {
   display: flex;
   align-items: center;
