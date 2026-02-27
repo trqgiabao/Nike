@@ -1,21 +1,31 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Input from "../../shared/components/atoms/Input";
 import Button from "../../shared/components/atoms/Button";
 import { signIn } from "../../features/auth/services";
+import { saveAuthSession } from "../../features/auth/session";
 import "../../styles/Auth.css";
 import swoosh from "../../assets/nike-swoosh.png";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function Signin() {
+const PORTAL_META = {
+  member: { heading: "Member Access", requiredRole: null },
+  staff: { heading: "Staff Access", requiredRole: "staff" },
+  admin: { heading: "Admin Access", requiredRole: "admin" },
+};
+
+export default function Signin({ portal = "member" }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const meta = PORTAL_META[portal] || PORTAL_META.member;
 
   const validate = () => {
     const nextErrors = {};
@@ -52,18 +62,37 @@ export default function Signin() {
         password,
       });
 
-      const payload = {
-        accessToken: response.accessToken ?? null,
-        refreshToken: response.refreshToken ?? null,
-        id: response.id ?? null,
-        email: response.email ?? (isEmail ? trimmedIdentifier : null),
-        username: response.username ?? (!isEmail ? trimmedIdentifier : null),
-      };
+      const role = response.role || "member";
+      if (meta.requiredRole && role !== meta.requiredRole) {
+        setApiError(`This account is not allowed for ${portal} portal.`);
+        return;
+      }
 
-      const storage = remember ? window.localStorage : window.sessionStorage;
-      storage.setItem("nike_auth", JSON.stringify(payload));
+      saveAuthSession(
+        {
+          accessToken: response.accessToken ?? null,
+          refreshToken: response.refreshToken ?? null,
+          id: response.id ?? null,
+          email: response.email ?? (isEmail ? trimmedIdentifier : null),
+          username: response.username ?? (!isEmail ? trimmedIdentifier : null),
+          role,
+        },
+        remember
+      );
 
-      navigate("/", { replace: true });
+      const from = location.state?.from?.pathname;
+      if (from) {
+        navigate(from, { replace: true });
+        return;
+      }
+
+      if (role === "admin") {
+        navigate("/admin", { replace: true });
+      } else if (role === "staff") {
+        navigate("/staff", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       setApiError(error.message || "Sign in failed. Please try again.");
     } finally {
@@ -78,7 +107,7 @@ export default function Signin() {
           <img className="swoosh" src={swoosh} alt="Nike swoosh" />
           <div>
             <p className="brand-name">NIKE</p>
-            <small>Member Access</small>
+            <small>{meta.heading}</small>
           </div>
         </div>
 
@@ -133,9 +162,11 @@ export default function Signin() {
           {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
 
-        <p className="auth-footnote">
-          Don&apos;t have an account? <Link to="/signup">Sign up</Link>
-        </p>
+        {portal === "member" && (
+          <p className="auth-footnote">
+            Don&apos;t have an account? <Link to="/signup">Sign up</Link>
+          </p>
+        )}
       </form>
     </main>
   );

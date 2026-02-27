@@ -1,0 +1,39 @@
+.bo-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.bo-sidebar {
+  background: #101318;
+  color: #fff;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bo-sidebar a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.bo-sidebar button {
+  margin-top: auto;
+  border: none;
+  background: #ff4b2b;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.bo-user {
+  color: #c0c7d1;
+  font-size: 14px;
+}
+
+.bo-content {
+  padding: 32px;
+  background: #f8fafc;
+}
