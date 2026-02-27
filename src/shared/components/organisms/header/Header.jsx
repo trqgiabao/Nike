@@ -1,9 +1,12 @@
 import "./Header.css"
-import { ShoppingBag, Heart, Search, Menu } from 'lucide-react';
-import { IconButton } from '../../molecules';
-import { NavLink } from '../../molecules';
+import  IconButton  from '@/shared/components/molecules/iconButton/IconButton.jsx';
+import  NavLink  from '@/shared/components/molecules/navLink/NavLink.jsx';
+import { ShoppingBag, Heart, Search, Menu, User } from 'lucide-react';
+import { Link } from "react-router-dom";
+
 
 const Header = () => {
+
   return (
     <header className="header">
       <div className="header__container">
@@ -34,6 +37,20 @@ const Header = () => {
           <IconButton badge={3}>
             <ShoppingBag size={20} />
           </IconButton>
+          <div className="header__auth">
+            <IconButton className="header__auth-trigger">
+              <User size={20} />
+            </IconButton>
+            <div className="header__auth-dropdown">
+              <Link to="/signin" className="header__auth-link">
+                              Sign in
+              </Link>
+
+              <Link to="/signup" className="header__auth-link">
+                              Sign up
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </header>
