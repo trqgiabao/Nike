@@ -1,0 +1,223 @@
+.nike-auth {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem 3rem;
+  background: #fff;
+}
+
+.nike-auth-logo-wrap {
+  margin-bottom: 2rem;
+}
+
+.nike-auth-logo {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.nike-auth-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+  background: transparent;
+  mix-blend-mode: darken;
+}
+
+.nike-auth-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.nike-auth-headline {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.3;
+}
+
+.nike-auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+}
+
+.nike-auth-field {
+  margin-bottom: 1rem;
+}
+
+.nike-auth-field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.nike-auth-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #111;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 24px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.nike-auth-input::placeholder {
+  color: #757575;
+}
+
+.nike-auth-input:focus {
+  outline: none;
+  border-color: #111;
+  background: #fff;
+}
+
+.nike-auth-input-error {
+  border-color: #c00;
+}
+
+.nike-auth-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nike-auth-password-wrap .nike-auth-input {
+  padding-right: 2.75rem;
+}
+
+.nike-auth-eye {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #757575;
+}
+
+.nike-auth-eye:hover {
+  color: #111;
+}
+
+.nike-auth-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #c00;
+}
+
+.nike-auth-api-error {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.nike-auth-resend {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: #757575;
+}
+
+.nike-auth-resend-btn {
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  color: #111;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.nike-auth-resend-btn:hover {
+  text-decoration: none;
+}
+
+.nike-auth-legal {
+  margin: 0 0 1.5rem;
+  font-size: 0.8rem;
+  color: #757575;
+  line-height: 1.4;
+}
+
+.nike-auth-legal a {
+  color: #111;
+  text-decoration: underline;
+}
+
+.nike-auth-legal a:hover {
+  text-decoration: none;
+}
+
+.nike-auth-email-row {
+  margin: 0 0 1.25rem;
+  font-size: 1rem;
+  color: #111;
+}
+
+.nike-auth-edit {
+  margin-left: 0.35rem;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  color: #111;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.nike-auth-edit:hover {
+  text-decoration: none;
+}
+
+.nike-auth-btn {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+  box-sizing: border-box;
+}
+
+.nike-auth-btn-primary {
+  margin-bottom: 0.75rem;
+  color: #fff;
+  background: #111;
+  border: none;
+}
+
+.nike-auth-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.nike-auth-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.nike-auth-btn-secondary {
+  color: #111;
+  background: #fff;
+  border: 2px solid #111;
+}
+
+.nike-auth-btn-secondary:hover {
+  background: #f5f5f5;
+}
