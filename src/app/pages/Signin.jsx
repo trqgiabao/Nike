@@ -10,7 +10,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Signin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [errors, setErrors] = useState({});
@@ -20,14 +20,12 @@ export default function Signin() {
   const validate = () => {
     const nextErrors = {};
 
-    if (!email.trim()) {
-      nextErrors.email = "Email là bắt buộc";
-    } else if (!EMAIL_REGEX.test(email)) {
-      nextErrors.email = "Email không đúng định dạng";
+    if (!identifier.trim()) {
+      nextErrors.identifier = "Email or username is required";
     }
 
     if (!password) {
-      nextErrors.password = "Password là bắt buộc";
+      nextErrors.password = "Password is required";
     }
 
     setErrors(nextErrors);
@@ -44,13 +42,22 @@ export default function Signin() {
 
     setIsSubmitting(true);
 
+    const trimmedIdentifier = identifier.trim();
+    const isEmail = EMAIL_REGEX.test(trimmedIdentifier);
+
     try {
-      const response = await signIn({ email: email.trim(), password });
+      const response = await signIn({
+        email: isEmail ? trimmedIdentifier : undefined,
+        username: isEmail ? undefined : trimmedIdentifier,
+        password,
+      });
+
       const payload = {
         accessToken: response.accessToken ?? null,
         refreshToken: response.refreshToken ?? null,
         id: response.id ?? null,
-        email: response.email ?? email.trim(),
+        email: response.email ?? (isEmail ? trimmedIdentifier : null),
+        username: response.username ?? (!isEmail ? trimmedIdentifier : null),
       };
 
       const storage = remember ? window.localStorage : window.sessionStorage;
@@ -58,7 +65,7 @@ export default function Signin() {
 
       navigate("/", { replace: true });
     } catch (error) {
-      setApiError(error.message || "Đăng nhập thất bại, vui lòng thử lại.");
+      setApiError(error.message || "Sign in failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -78,17 +85,17 @@ export default function Signin() {
         <h1>Welcome back.</h1>
 
         <div className="auth-field">
-          <label htmlFor="signin-email">Email</label>
+          <label htmlFor="signin-identifier">Email or username</label>
           <Input
-            id="signin-email"
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={Boolean(errors.email)}
-            autoComplete="email"
+            id="signin-identifier"
+            type="text"
+            placeholder="you@example.com or yourusername"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            error={Boolean(errors.identifier)}
+            autoComplete="username"
           />
-          {errors.email && <p className="auth-error">{errors.email}</p>}
+          {errors.identifier && <p className="auth-error">{errors.identifier}</p>}
         </div>
 
         <div className="auth-field">
@@ -127,7 +134,7 @@ export default function Signin() {
         </Button>
 
         <p className="auth-footnote">
-          Chưa có tài khoản? <Link to="/signup">Sign up</Link>
+          Don&apos;t have an account? <Link to="/signup">Sign up</Link>
         </p>
       </form>
     </main>

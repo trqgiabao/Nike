@@ -31,10 +31,10 @@ export async function verifyEmailOtp({ email, code }) {
   });
 }
 
-export async function signIn({ email, password }) {
+export async function signIn({ email, username, password }) {
   return requestJson(`${GATEWAY_BASE}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, username, password }),
   });
 }
