@@ -129,7 +129,7 @@ export default function Signin() {
 
         {apiError && <p className="auth-error auth-error-api">{apiError}</p>}
 
-        <Button type="submit" fullWidth disabled={isSubmitting}>
+        <Button type="submit" fullWidth className="auth-signin-btn" disabled={isSubmitting} >
           {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
 
