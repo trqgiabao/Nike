@@ -1,128 +1,88 @@
-import { useState } from 'react';
-import Button  from '@/shared/components/atoms/button/Button.jsx';
-import Header from '@/shared/components/organisms/header/Header.jsx';
-import Footer from '@/shared/components/organisms/footer/Footer.jsx';
-import './Profile.css';
+import { useEffect, useState } from "react";
+import Header from "@/shared/components/organisms/header/Header.jsx";
+import Footer from "@/shared/components/organisms/footer/Footer.jsx";
+import UserProfile from "../components/UserProfile";
+import { getUserProfile } from "../profileService";
+import "./Profile.css";
+
+import shoe1 from "@/assets/shoe-1.png";
+import shoe2 from "@/assets/shoe-2.png";
+import shoe3 from "@/assets/shoe-3.png";
+import shoe4 from "@/assets/shoe-4.png";
+import shoe5 from "@/assets/shoe-5.png";
+import shoe6 from "@/assets/shoe-6.png";
+import shoe7 from "@/assets/shoe-7.png";
+import shoe8 from "@/assets/shoe-8.png";
+
+const recommendedImages = [shoe1, shoe2, shoe3, shoe4, shoe5, shoe6, shoe7, shoe8];
 
 export default function Profile() {
-  const [user] = useState({
-    displayName: "Duy Minh",
-    memberSince: "February 2026",
-    avatar: null,
-    role: "Member",
-  });
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [activeTag, setActiveTag] = useState("All");
+  const userId = "550e8400-e29b-41d4-a716-446655440000";
+  const email = "test@gmail.com";
 
-  const interestCategories = ["All", "Sports", "Products", "Teams", "Athletes", "Cities"];
+  useEffect(() => {
+    async function fetchProfile() {
+      try {
+        const data = await getUserProfile(userId);
+        setProfile(data);
+      } catch (err) {
+        console.warn("API failed → using mock data");
+        setProfile({
+          fullName: "User 1234",
+          phoneNumber: "0901234567",
+          createdAt: "2025-01-15T08:30:00Z",
+          status: "Active",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  const recommendedProducts = [
-    {
-      name: "Nike Sportswear Phoenix Fleece",
-      category: "Women's Hoodie",
-      price: "1,000,000₫",
-      originalPrice: "1,200,000₫",
-      image: "product1.jpg",
-      isNew: true,
-      colors: 6,
-    },
-    {
-      name: "Air Jordan Mule",
-      category: "Slides",
-      price: "1,234,567₫",
-      image: "product2.jpg",
-      isNew: false,
-      colors: 3,
-    },
-  ];
+    fetchProfile();
+  }, [userId]);
+
   return (
-    <div className="profile-wrapper">
+    <div>
       <Header />
 
-      <main className="profile-page" style={{ paddingTop: '90px' }}>
-        {/* User Header */}
-        <div className="profile-header">
-          <div className="avatar-wrapper">
-            {user.avatar ? (
-              <img src={user.avatar} alt="Avatar" className="avatar" />
-            ) : (
-              <div className="avatar-placeholder">
-                {user.displayName.charAt(0).toUpperCase()}
-              </div>
-            )}
-          </div>
+      <main className="settings-page" style={{ paddingTop: "90px" }}>
+        {loading && <p className="text-center text-xl py-20">Loading profile...</p>}
+        {error && <p className="text-center text-red-600 text-xl py-20">{error}</p>}
 
-          <div className="user-info">
-            <h1 className="user-name">{user.displayName.toUpperCase()}</h1>
-            <p className="user-subtitle">
-              Nike Member • Since {user.memberSince}
-            </p>
-          </div>
-        </div>
+        {profile && (
+          <div className="max-w-6xl mx-auto px-4">
+            <UserProfile profile={profile} email={email} />
+            <section className="mt-12">
+              <h1 className="text-2xl font-bold mb-6 uppercase tracking-wide">
+                Recommended For You
+              </h1>
 
-        {/* Interests */}
-        <section className="interests-section">
-          <div className="section-header">
-            <h2>Interests</h2>
-            <Button variant="outline" size="small">Edit</Button>
-          </div>
-
-          <div className="interests-tags">
-            {interestCategories.map((category) => (
-              <span
-                key={category}
-                className={`tag ${activeTag === category ? "active" : ""}`}
-                onClick={() => setActiveTag(category)}
-              >
-                {category}
-              </span>
-            ))}
-          </div>
-
-          <div className="add-interests-placeholder">
-            <div className="placeholder-box">
-              <span className="plus-icon">+</span>
-              <p>Add {activeTag === "All" ? "Interests" : activeTag}</p>
-            </div>
-            <p className="helper-text">
-              Add interests to get personalized product recommendations.
-            </p>
-          </div>
-        </section>
-
-        {/* Recommended Products */}
-        <section className="recommended-section">
-          <h2>Find Your Next Favourite</h2>
-          <div className="product-grid">
-            {recommendedProducts.map((product, idx) => (
-              <div key={idx} className="product-card">
-                {product.isNew && <span className="badge badge--new">New</span>}
-                <img src={product.image} alt={product.name} />
-                <div className="product-info">
-                  <p className="category">{product.category}</p>
-                  <h3>{product.name}</h3>
-                  <div className="pricing">
-                    <span className="price">{product.price}</span>
-                    {product.originalPrice && (
-                      <span className="original-price">{product.originalPrice}</span>
-                    )}
+              <div className="recommended-scroll">
+                {recommendedImages.map((img, index) => (
+                  <div key={index} className="recommended-item">
+                    <img
+                      src={img}
+                      alt={`Recommended ${index + 1}`}
+                    />
                   </div>
-                  <p className="colors">{product.colors} Colors</p>
-                </div>
+                ))}
               </div>
-            ))}
+              <div className="text-center mt-8">
+                <button className="px-10 py-4 bg-nike-orange text-white text-lg font-bold rounded-xl hover:bg-orange-600 transition shadow-lg">
+                  View More
+                </button>
+              </div>
+            </section>
           </div>
-        </section>
-
-        {/* Member Benefits */}
-        <section className="benefits-section">
-          <h2>Member Benefits</h2>
-          <div className="benefits-grid">
-          </div>
-        </section>
-      </main>
+        )
+        }
+      </main >
 
       <Footer />
-    </div>
+    </div >
   );
 }

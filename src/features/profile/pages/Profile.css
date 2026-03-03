@@ -1,39 +1,44 @@
-.profile-page {
-    max-width: 1280px;
+.settings-page {
+    background: #f5f5f5;
+    padding-top: 80px;
+    padding-bottom: 60px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.profile-card {
+    max-width: 850px;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
-    background: #f0f0f0;
-    min-height: 100vh;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-}
-
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.5rem 2rem;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    margin-bottom: 2rem;
+    border-radius: 16px;
+    padding: 2.5rem;
+    display: flex;
+    gap: 3rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 }
 
-.avatar-wrapper {
-    flex-shrink: 0;
+.profile-left {
+    width: 200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar,
+.avatar-placeholder {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: block;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
     object-fit: cover;
     border: 3px solid #f35000;
 }
 
 .avatar-placeholder {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
     background: #111;
     color: #fff;
     font-size: 3.5rem;
@@ -44,162 +49,108 @@
     border: 3px solid #f35000;
 }
 
-.user-name {
-    margin: 0;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #111;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.user-subtitle {
-    margin: 0.3rem 0 0;
-    font-size: 1rem;
-    color: #555;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
-}
-
-.section-header h2 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #111;
-}
-
-.interests-section {
-    margin-bottom: 2.5rem;
-}
-
-.interests-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-}
-
-.tag {
-    padding: 0.6rem 1.4rem;
-    border-radius: 999px;
-    background: #e0e0e0;
-    color: #333;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.tag:hover {
-    background: #d0d0d0;
-}
-
-.tag.active {
-    background: #f35000;
-    color: #fff;
-}
-
-.add-interests-placeholder {
-    padding: 2.5rem 1rem;
-    background: #ffffff;
-    border: 2px dashed #ccc;
-    border-radius: 12px;
+.member-since {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #777;
     text-align: center;
 }
 
-.plus-icon {
-    font-size: 3.5rem;
-    color: #f35000;
-    margin-bottom: 0.8rem;
+.profile-right {
+    flex: 1;
 }
 
-.helper-text {
-    color: #666;
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.edit-btn {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.edit-btn:hover {
+    background: #333;
+}
+
+.info-item {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item label {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 0.3rem;
+}
+
+.info-item span {
     font-size: 1rem;
+    font-weight: 500;
+    color: #111;
 }
 
-.recommended-section {
-    margin-bottom: 3rem;
+.recommended-scroll {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 12px;
+    padding-right: 40px;
+    scroll-behavior: smooth;
+    cursor: grab;
 }
 
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1.5rem;
+.recommended-scroll:active {
+    cursor: grabbing;
 }
 
-.product-card {
-    background: #ffffff;
-    border-radius: 12px;
+.recommended-item {
+    flex: 0 0 220px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: #fff;
+    transition: 0.3s;
 }
 
-.product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-}
-
-.product-card img {
+.recommended-item img {
     width: 100%;
     height: 260px;
     object-fit: cover;
+    display: block;
+    transition: 0.4s;
 }
 
-.product-info {
-    padding: 1.2rem;
+.recommended-item:hover img {
+    transform: scale(1.05);
 }
 
-.category {
-    color: #f35000;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
+/* Thanh scroll đẹp hơn */
+.recommended-scroll::-webkit-scrollbar {
+    height: 8px;
 }
 
-.product-info h3 {
-    margin: 0.5rem 0;
-    font-size: 1.25rem;
-    color: #111;
+.recommended-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
 }
 
-.pricing {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin: 0.6rem 0;
-}
-
-.price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #111;
-}
-
-.original-price {
-    color: #999;
-    text-decoration: line-through;
-    font-size: 1rem;
-}
-
-.colors {
-    color: #555;
-    font-size: 0.9rem;
-}
-
-@media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-        padding: 1.5rem;
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
+.recommended-scroll::-webkit-scrollbar-track {
+    background: transparent;
 }
