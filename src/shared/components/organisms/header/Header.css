@@ -19,11 +19,30 @@
 
 .header__auth {
   position: relative;
+  display: flex;
+  align-items: center;
 }
+
+.header__auth-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header__username {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .header__auth-dropdown {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% - 2px);
   right: 0;
   background-color: var(--color-background);
   border: 1px solid var(--color-border);
@@ -32,11 +51,14 @@
   min-width: 160px;
   z-index: 200;
   overflow: hidden;
+  padding-top: 0.75rem;
 }
+
 .header__auth:hover .header__auth-dropdown {
   display: flex;
   flex-direction: column;
 }
+
 .header__auth-link {
   padding: 0.75rem 1rem;
   font-family: var(--font-body);
@@ -45,9 +67,19 @@
   color: var(--color-foreground);
   text-decoration: none;
   transition: background-color var(--transition-normal);
+  text-align: left;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
 }
+
 .header__auth-link:hover {
   background-color: var(--color-muted);
+}
+
+.header__auth-button {
+  display: block;
 }
 
 .header__search {
@@ -105,5 +137,11 @@
   }
   .header__container {
     padding: 0 var(--spacing-md);
+  }
+  .header__username {
+    display: none;
+  }
+  .header__search-input {
+    width: 150px;
   }
 }

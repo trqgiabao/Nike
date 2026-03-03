@@ -8,6 +8,7 @@ import "./SignIn.css";
 
 import { signIn } from "@/features/auth/services/AuthServices.js";
 import { saveAuthSession } from "@/features/auth/session";
+import { getUserFromToken } from "@/shared/utils/Token";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -56,19 +57,24 @@ export default function SignIn({ portal = "member" }) {
         password,
       });
 
-      const role = response.role || "member";
+      // Decode token to get user info
+      const userInfo = getUserFromToken(response.accessToken);
+      const role = userInfo?.role?.toLowerCase() || "member";
+
+      // Check portal access
       if (meta.requiredRole && role !== meta.requiredRole) {
         setApiError(`This account is not allowed for ${portal} portal.`);
         return;
       }
 
+      // Save tokens and user info to storage
       saveAuthSession(
         {
-          accessToken: response.accessToken ?? null,
-          refreshToken: response.refreshToken ?? null,
-          id: response.id ?? null,
-          email: response.email ?? (isEmail ? trimmedIdentifier : null),
-          username: response.username ?? (!isEmail ? trimmedIdentifier : null),
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+          id: response.id || userInfo?.id,
+          email: userInfo?.email || (isEmail ? trimmedIdentifier : null),
+          username: userInfo?.username || (!isEmail ? trimmedIdentifier : null),
           role,
         },
         remember

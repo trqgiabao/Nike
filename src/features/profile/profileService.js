@@ -1,18 +1,29 @@
+import { apiClient, BASE_URL } from "@/shared/utils/Api";
+
 const GATEWAY_BASE =
-    import.meta.env.VITE_API_BASE || "https://localhost:3110";
+    import.meta.env.VITE_API_BASE || BASE_URL;
 
 async function requestJson(url, options) {
-    const res = await fetch(url, options);
-    const data = await res.json().catch(() => ({}));
+    const endpoint = url.replace(GATEWAY_BASE, '');
+    const method = options.method || 'GET';
+    const body = options.body ? JSON.parse(options.body) : undefined;
 
-    if (!res.ok) {
-        const err = new Error(data.message || data.title || "Request failed");
-        err.status = res.status;
-        err.data = data;
+    try {
+        if (method === 'POST') {
+            return await apiClient.post(endpoint, body);
+        } else if (method === 'GET') {
+            return await apiClient.get(endpoint);
+        } else if (method === 'PUT') {
+            return await apiClient.put(endpoint, body);
+        } else if (method === 'DELETE') {
+            return await apiClient.delete(endpoint);
+        }
+    } catch (error) {
+        const err = new Error(error.message || "Request failed");
+        err.status = error.status;
+        err.data = error;
         throw err;
     }
-
-    return data;
 }
 
 export async function getUserProfile(userId) {

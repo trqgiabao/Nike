@@ -3,64 +3,74 @@ import { ProductCard } from '@/features/product';
 import { Button } from '@/shared/components/atoms';
 import { FilterButton } from '@/shared/components/molecules';
 import { FILTER_OPTIONS } from '@/shared/constants';
+import { getProducts } from '@/features/product/services/ProductService';
 import { useEffect, useState } from 'react';
+
 const ProductGrid = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [products, setProducts] = useState([]);   
-  const [loading, setLoading] = useState(true);   
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [hasNext, setHasNext] = useState(false);
+  const [hasPrevious, setHasPrevious] = useState(false);
+
   useEffect(() => {
+    fetchProducts();
+  }, [page]);
+
   const fetchProducts = async () => {
+    setLoading(true);
     try {
-      //ngrok-skip-browser-warning
-      const response = await fetch("https://d8de-14-234-30-72.ngrok-free.app/api/product", 
-        {
-          headers: {
-          'ngrok-skip-browser-warning': 'true'
-                    }
-        }
-                                  );
-      const data = await response.json();
+      const data = await getProducts({ page, pageSize: 20 });
 
       console.log("RAW DATA:", data);
 
-      const formatted = data.map(product => {
+      // Map API response to ProductCard format
+      const formatted = data.items.map(product => {
+        // Map gender: 0 = Unisex, 1 = Men, 2 = Women
+        const genderMap = {
+          0: 'Unisex',
+          1: 'Men',
+          2: 'Women'
+        };
+        
+        const categoryName = genderMap[product.gender] || 'Unknown';
 
-        const categoryName = product.categories?.[0]?.name || "Unknown";
-
-
-        const mainImage =
-          product.images?.find(img => img.isMain)?.url ||
-          product.images?.[0]?.url ||
-          "";
-
-
-        const colorsCount = new Set(
-          product.variants?.map(v => v.color)
-        ).size;
+        // Calculate colors count (can be enhanced if API provides variant data)
+        const colorsCount = 1;
 
         return {
           id: product.id,
           name: product.name,
           category: categoryName,
-          price: product.basePrice,
-          originalPrice: null, 
-          image: mainImage,
+          price: product.minPrice,
+          originalPrice: product.minPrice !== product.maxPrice ? product.maxPrice : null, 
+          image: product.mainImageUrl,
           isNew: false, 
-          colors: colorsCount
+          colors: colorsCount,
+          isAvailable: product.isAvailable
         };
       });
 
       setProducts(formatted);
+      setTotalPages(data.totalPages);
+      setHasNext(data.hasNext);
+      setHasPrevious(data.hasPrevious);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  fetchProducts();
-}, []);
-if (loading) return <p>Loading products...</p>;
+  const handleLoadMore = () => {
+    if (hasNext) {
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
+  if (loading && page === 1) return <p>Loading products...</p>;
   return (
     <section className="product-section">
       <div className="product-section__container">
@@ -87,8 +97,25 @@ if (loading) return <p>Loading products...</p>;
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-        <div className="product-section__load-more">
-          <Button variant="secondary" size="large">Load More Products</Button>
+        {loading && page > 1 && (
+          <div className="product-section__load-more">
+            <p>Loading more products...</p>
+          </div>
+        )}
+        {!loading && hasNext && (
+          <div className="product-section__load-more">
+            <Button variant="secondary" size="large" onClick={handleLoadMore}>
+              Load More Products
+            </Button>
+          </div>
+        )}
+        {!loading && !hasNext && page > 1 && (
+          <div className="product-section__load-more">
+            <p>No more products to load</p>
+          </div>
+        )}
+        <div className="product-section__pagination-info">
+          <p>Page {page} of {totalPages}</p>
         </div>
       </div>
     </section>

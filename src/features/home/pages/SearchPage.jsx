@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/features/product";
+import { apiClient } from "@/shared/utils";
 import "@/features/home/components/productGrid/ProductGrid.css";
 
 const SearchPage = () => {
@@ -15,16 +16,8 @@ const SearchPage = () => {
       try {
         setLoading(true);
 
-        const response = await fetch(
-          `https://d8de-14-234-30-72.ngrok-free.app/api/product/search?q=${keyword}`,
-          {
-            headers: {
-              "ngrok-skip-browser-warning": "true"
-            }
-          }
-        );
-
-        const data = await response.json();
+        const queryString = apiClient.buildQueryString({ q: keyword });
+        const data = await apiClient.get(`/api/product/search${queryString}`);
 
         const formatted = data.map(product => {
           const categoryName = product.categories?.[0]?.name || "Unknown";
