@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { clearAuthSession, readAuthSession } from "../../features/auth/session";
-import "../../styles/Backoffice.css";
+import "../../app/style/Backoffice.css";
 
 export default function BackofficeLayout({ title }) {
   const navigate = useNavigate();
@@ -15,7 +15,9 @@ export default function BackofficeLayout({ title }) {
     <div className="bo-layout">
       <aside className="bo-sidebar">
         <h2>{title}</h2>
-        <p className="bo-user">Signed in as: {auth?.username || auth?.email || "Unknown"}</p>
+        <p className="bo-user">
+          Signed in as: {auth?.username || auth?.email || "Unknown"}
+        </p>
         <nav>
           <Link to="/">Storefront</Link>
         </nav>
