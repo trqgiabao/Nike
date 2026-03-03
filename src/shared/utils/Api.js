@@ -1,4 +1,4 @@
-const BASE_URL = 'https://errable-amalia-uneventfully.ngrok-free.dev';
+const BASE_URL = 'https://freckly-hyperarchaeological-thea.ngrok-free.dev';
 
 // Get auth token from storage
 const getAuthToken = () => {
